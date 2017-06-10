@@ -1,11 +1,11 @@
 ## Qtrack - Options Tick Tracking
 
-### OptionChain Request:
+#### OptionChain Request:
 
-#### Request URL:
+##### Request URL:
 ```https://apis.tdameritrade.com/apps/200/OptionChain?source=<#sourceID#>&symbol=<#symbol#>```
 
-#### Parameters:
+##### Parameters: 
 The symbol parameter contains the underlying symbol for the option chain being requested.
 
 |PARAMETER|DESCRIPTION|REQUIRED|POSSIBLE VALUES|
@@ -21,11 +21,14 @@ strike|The option chain strike price. If the strike price is not included, then 
 |fardate|for use with Calendar spreads|NO|YYYYMM Format date|
 |quotes|A flag to request quote data.  The default behavior is not to send quote data.|NO| **true/false**|
 
+<br>
+<br>
 
-#### OptionChain Response - With Quotes
+#### OptionChain Response (With Quotes):
+-----------------
 
-|XML Attribute Name|Type|Definitions|
-|---------|:---------|:------|
+|XML Attribute |Type|Definitions|
+|--------------|:---------|:------|
 |XML Attribute Name|Type|Definitions|
 |result|String|Contains the overall result for the request.<br>OK - indicates the request was successful<br>FAIL - indicates the request was unsuccessful.|
 |option-chain-results|Complex|Container for all the option chain info|
