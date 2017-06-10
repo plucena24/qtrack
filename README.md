@@ -20,3 +20,68 @@ strike|The option chain strike price. If the strike price is not included, then 
 |neardate|for use with Calendar spreads|NO|YYYYMM Format date|
 |fardate|for use with Calendar spreads|NO|YYYYMM Format date|
 |quotes|A flag to request quote data.  The default behavior is not to send quote data.|NO| **true/false**|
+
+
+#### OptionChain Response - With Quotes
+
+|XML Attribute Name|Type|Definitions|
+|---------|:---------|:------|
+|XML Attribute Name|Type|Definitions|
+|result|String|Contains the overall result for the request.<br>OK - indicates the request was successful<br>FAIL - indicates the request was unsuccessful.|
+|option-chain-results|Complex|Container for all the option chain info|
+|error|String|Contains an error message| if any. For example| **The Security Symbol is Invalid.**|
+|symbol|String|Symbol of the security being quoted.  For example| **DELL**|
+|description|String|"Contains a description of the symbol. For example| **TD AMERITRADE HLDG CORP COM**"|
+|bid|Double|Underlying Symbol - BID|
+|ask|Double|Underlying Symbol - ASK|
+|bid-ask-size|String|Underlying Symbol - bid/ask Size <br>The value is displayed as **bid qty X ask qty**. For example, **390X41**
+|last|Double|Underlying Symbol - The price of the last trade|
+|open|Double|Underlying Symbol - The price of the first trade at normal market open.|
+|high|Double|Underlying Symbol - The highest price trade for the symbol during the normal trading session|
+|low|Double|Underlying Symbol - The lowest price trade for the symbol during the normal trading session.|
+|close|Double|Underlying Symbol - The price of the last trade for the symbol at the end of the previous trading session.|
+|volume|Integer|Underlying Symbol - The number of shares traded for the symbol.|
+|change|Double|Underlying Symbol - **CHANGE**|
+|quote-punctuality|String|**R or D** - Real-time or Delayed|
+|time|String|Last Trade Time for the quote|
+|option-date|Complex|Container for all the option chain data for a particular option expiration date|
+|date|String|The options expiration date in **YYYYMMDD** format|
+|expiration-type|String|**R or L** - Regular or LEAP|
+|days-to-expiration|Integer|Number of days till the options expire|
+|option-strike|Complex|Container for the options at a given strike price|
+|strike-price|Double|Option Strike Price|
+|standard-option|String|**true/false** - indicates if the options in question are standard or non-standard|
+|put|Complex|Container for the fields describing the PUT option symbol at the given date and strike price|
+call|Complex|Container for the fields describing the CALL option symbol at the given date and strike price
+option-symbol|String|The option symbol
+description|String|The option symbol description
+bid|Double| 
+ask|Double| 
+bid-ask-size|String| 
+last|Double| 
+last-trade-date|String| 
+volume|Integer| 
+open-interest|Integer| 
+real-time|String| 
+underlying-symbol|String| 
+delta|Double| 
+gamma|Double| 
+theta|Double| 
+vega|Double| 
+rho|Double| 
+implied-volatility|Double| 
+time-value-index|Double| 
+multiplier|Integer| 
+change|Double| 
+change-percent|String| 
+in-the-money|String|**true/false**
+near-the-money|String|**true/false**
+theoretica-value|Double| 
+deliverable-list|Complex|Container for Deliverables
+notes-description|String|For non-standard options this describes what needs to be delivered. For example:**$600.0cash in lieu of shares, 100 shares of AMTD**
+cash-in-lieu-dollar-amount|Double| 
+cash-dollar-amount|Double| 
+index-option|String|**true/false**
+row|Complex|Container
+   symbol|String| 
+   shares|Integer| 
