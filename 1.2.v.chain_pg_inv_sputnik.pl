@@ -6,6 +6,7 @@ use DateTime;
 use DateTime::Format::Strptime;
 use Cwd;
 use DBI;
+use OPT::MultChainSputnik qw(launchChainSputnik get_credentials);
 
 #use Thread qw(async);
 use threads;
@@ -35,8 +36,6 @@ package main;
 sub sleeping_sub ( $ $ $ );
 
 my $nb_process;
-
-#my $nb_compute = 20;
 my $i          = 0;
 my @running    = ();
 my @Threads;
@@ -46,15 +45,15 @@ my $sql_table = 'xxx';
 my $rowcache;
 my $max_rows = 1;
 
-sub get_credentials {
-    my ($file) = @_;
-    open my $fh, "<", $file or die $!;
-
-    my $line = <$fh>;
-    chomp($line);
-    return ($line)
-
-};
+#sub get_credentials {
+#    my ($file) = @_;
+#    open my $fh, "<", $file or die $!;
+#
+#    my $line = <$fh>;
+#    chomp($line);
+#    return ($line)
+#
+#};
 
 my ($dbInfo, $pguser, $pgpass) = split /~/, get_credentials("/home/zad0xlik/.qtrack_pg.conf");
 
@@ -102,7 +101,13 @@ while ( my $row =
     || shift( @{ $rowcache = $sth->fetchall_arrayref( undef, $max_rows ) } ) )
 {
 
-    my $prod_filter = "perl /lib/1.2.v.chain_pg_sputnik.pl @{$row} " . lc(substr(join('', @{$row}), 0, 1)) . "_optsputnik";
+    my $symbol = join('', @{$row});
+    my $table = lc(substr($symbol, 0, 1)) . "_optsputnik";
+    my $simulation = 1;
+
+    my $prod_filter = launchChainSputnik($symbol, $table, $simulation);
+
+#    my $prod_filter = "perl /lib/1.2.v.chain_pg_sputnik.pl @{$row} " . lc(substr(join('', @{$row}), 0, 1)) . "_optsputnik";
 
     @running = threads->list(threads::running);
     print "LOOP $i\n";
