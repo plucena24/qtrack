@@ -160,33 +160,3 @@ use warnings;
 END {
     $db->disconnect if defined($db);
 }
-
-##  my $thr;
-##	#Declare start timestamp
-##	my $dt_end = DateTime->now;
-##	my $ymd_end = $dt_end->ymd('/');
-##	my $hms_end = $dt_end->hms;
-##	my $lag = DateTime::Duration->new($dt_end - $dt_start)->delta_minutes;
-##
-##
-##
-##                    @running = threads->list(threads::running);
-##            print "  - BEGIN LOOP >> NB running threads = ".(scalar @running)."\n";
-##
-##            #1.3.mkt_view.pl
-##            my $prod_filter = 'perl '.cwd()."/1.2.v.chain_pg_bot.pl @{$row}";
-##
-##            $thr = async {
-##                  print "Loaded[$thread_counter]: $prod_filter\n";
-##                  system(${prod_filter});
-##            };
-##
-##            if ($thread_counter==10) {
-##            #would be more effecient to change to scalar - $response->content_ref();
-##                  $thr->join();
-##                  $thread_counter = 0;
-##            }
-##            #$thr->join();
-##            $thread_counter++;
-##            @running = threads->list(threads::running);
-##            print "  - AFTER STARTING >> NB running Threads = ".(scalar @running)."\n";
