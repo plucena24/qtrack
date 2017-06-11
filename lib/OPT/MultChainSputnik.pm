@@ -44,24 +44,9 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
             {AutoCommit=>1,RaiseError=>1,PrintError=>0}
         ) || die "Database connection not made: $DBI::errstr";
 
-
-        my $ins = $dbh2->prepare("INSERT INTO ". $table ." (load_time, call_option_symbol, call_bid, call_ask, call_bid_ask_size, call_last, call_delta, call_volume, call_open_interest, put_bid, put_ask, put_bid_ask_size, put_last, put_delta, put_volume, put_open_interest) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        #load_time, call_option_symbol, call_bid, call_ask, call_bid_ask_size, call_last, call_delta, call_volume, put_bid, put_ask, put_bid_ask_size, put_last, put_delta, put_volume
-        #?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        my $ins = $dbh2->prepare("INSERT INTO ". $table ." (load_time, call_option_symbol, lastUnderlyingPrice, call_bid, call_ask, call_bid_ask_size, call_last, call_delta, call_volume, call_implied_volatility, call_open_interest, put_bid, put_ask, put_bid_ask_size, put_last, put_delta, put_volume, put_implied_volatility, put_open_interest) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         #############################################################################################################
 
-
-        #############################################################################################################
-        #run loop to ping server - get new data
-        #if (array is not empty) {
-        #       the print
-        #   } else {request again from server}
-        #############################################################################################################
-
-
-        #my $counter = 1;
-
-        #while ($counter >= 0) {
         while (42) {
 
             #Declare timestamp
@@ -77,9 +62,6 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
             if (@keep) {
 
                 #move data to array1 - change shallow copy to deep copy
-                #shallow copy: @a1 = @a2; copies only the references
-                #deep copy: @a1 = dclone(@a2); or @a1 = map { [ @$_ ] } @a2; copies underlying data - takes more resources
-                #@a1 = @a2;
                 @a1 = map { [ @$_ ] } @a2;
 
                 #print $a1[1][1];
@@ -87,7 +69,6 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                 #replace date time
                 foreach my $row (@{keep})
                 {
-                    #$row->[0] =~ s/load_date/$ymd/g;
                     $row->[0] =~ s/load_time/$hms/g;
                     #print values $row;
                 }
@@ -104,7 +85,6 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
             undef @array1;
             undef @array2;
 
-            #$simulation = 0; #= int(rand(2)); #set back to 0 for market after hours
             print "simulation[ $symbol ] = $simulation - $hms \n";
 
             do {
@@ -122,8 +102,6 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                 if (scalar(grep {defined $_} @load) > 0) {
 
                     print "\nchange found - details\n $hms \n";
-                    #print scalar(grep {defined $_} @load), "\n";
-
                     push @keep, $a2[$i];
                     #print values $a2[$i];
 
@@ -221,6 +199,7 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                 return 1;
         }
 
+	my $lastUnderlyingPrice = $ref->{'option-chain-results'}->{'last'};
         my @result = @{$ref->{'option-chain-results'}->{'option-date'}};
 
         #Declare array to store XML response after being formatted
@@ -265,6 +244,8 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                         my $put_ask = "$_->{put}->{'ask'}";
                         my $call_delta= "$_->{call}->{'delta'}";
                         my $put_delta= "$_->{put}->{'delta'}";
+                    	my $call_implied_volatility = "$_->{call}->{'implied-volatility'}";
+                    	my $put_implied_volatility = "$_->{put}->{'implied-volatility'}";
                         my $call_open_interest = "$_->{call}->{'open-interest'}" || 0;
                         my $put_open_interest = "$_->{put}->{'open-interest'}" || 0;
 
@@ -274,6 +255,8 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                         $put_ask =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
                         $call_delta =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
                         $put_delta =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
+                    	$call_implied_volatility =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
+                    	$put_implied_volatility =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
                         $call_open_interest =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
                         $put_open_interest =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
 
@@ -281,12 +264,14 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
 
                         push @{ $array_ref }, "load_time";
                         push @{ $array_ref }, "$_->{call}->{'option-symbol'}";
+			push @{ $array_ref }, "$lastUnderlyingPrice";
                         push @{ $array_ref }, "$call_bid";
                         push @{ $array_ref }, "$call_ask";
                         push @{ $array_ref }, "$_->{call}->{'bid-ask-size'}";
                         push @{ $array_ref }, "$_->{call}->{'last'}";
                         push @{ $array_ref }, "$call_delta";
                         push @{ $array_ref }, "$sc_volume";
+			push @{ $array_ref }, "$call_implied_volatility";
                         push @{ $array_ref }, "$call_open_interest";
                         push @{ $array_ref }, "$put_bid";
                         push @{ $array_ref }, "$put_ask";
@@ -294,6 +279,7 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
                         push @{ $array_ref }, "$_->{put}->{'last'}";
                         push @{ $array_ref }, "$put_delta";
                         push @{ $array_ref }, "$sp_volume";
+			push @{ $array_ref }, "$put_implied_volatility";
                         push @{ $array_ref }, "$put_open_interest";
 
                         use warnings;
