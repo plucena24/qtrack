@@ -7,14 +7,21 @@ use DateTime::Format::Strptime;
 use Cwd;
 use DBI;
 use threads;
+use JSON;
+
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
-use lib dirname(dirname abs_path $0) . '/lib';
+use lib dirname(dirname abs_path $0) . '/lib/';
 #use OPT::MultChainSputnik qw(launchChainSputnik get_credentials);
+
 use OPT::MultChainSputnik qw( launchChainSputnik );
 
-use JSON;
-use CGI qw(:standard);
+#print dirname(dirname abs_path($0)) . '/lib/OPT/' . "\n";
+
+#launchChainSputnik(my $symbol = 'QQQ', my $table='q_optsputnik', my $simulation=1);
+#launchChainSputnik @{[(split//=>"QQQ q_optionsputnik 1")]};
+
+#use CGI qw(:standard);
 
 package Emp;
 
@@ -106,6 +113,7 @@ while ( my $row =
 
         #my $thread = threads->new( sub { system( ${prod_filter} ); } );
         my $thread = threads->create( launchChainSputnik($symbol, $table, $simulation) );
+        #my $thread = threads->create( launchChainSputnik @{[(split//=>"QQQ q_optionsputnik 1")]} );
 
         push( @Threads, $thread );
         my $tid = $thread->tid;

@@ -1,6 +1,4 @@
-#!/usr/bin/perl
 package OPT::MultChainSpuntik;
-
 use strict;
 use warnings;
 use XML::Simple;
@@ -13,11 +11,22 @@ use Benchmark qw( cmpthese );
 use threads;
 use threads::shared;
 
+
 use Exporter qw(import);
-our @EXPORT_OK = qw(launchChainSputnik get_credentials);
+#use Exporter;
+#use base qw( Exporter );
 
-    sub launchChainSputnik {
+#our \@ISA= qw( Exporter );
+our @EXPORT_OK = qw( launchChainSputnik get_credentials );
+#our $VERSION = '0.01';
+#our @EXPORT = qw( launchChainSputnik );
 
+
+sub launchChainSputnik($symbol, $table, $simulation); 
+
+sub launchChainSputnik{
+
+	my ($symbol, $table, $simulation) = @_;
 #        my $symbol = $ARGV[0];
 #        my $table = $ARGV[1];
 #        my $simulation = 1;
@@ -109,7 +118,9 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
             }
         }
 
-    };
+ }
+
+
 
     #############################################################################################################
     #thread requests - also this should set PERL_DESTRUCT_LEVEL to 2 - to give memory back
@@ -123,14 +134,15 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
         chomp($line);
         return ($line)
 
-    };
+    }
 
 
     #############################################################################################################
-#compare two arrays to see if anything has changed
-#############################################################################################################
+    #compare two arrays to see if anything has changed
+    #############################################################################################################
     sub compare{
-        
+
+	my (@array1, @array2) = @_;
         my @intersection = ();
         my @difference = ();
         my %count = ();
@@ -142,7 +154,7 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
             
         return @difference;
         
-    };
+    }
 
 
     #############################################################################################################
@@ -150,6 +162,7 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
     #############################################################################################################
     sub chain_pull{
 
+	my ($symbol, $simulation) = @_;
         my $ua = LWP::UserAgent->new();
 
         $ua->cookie_jar({});
@@ -299,4 +312,6 @@ our @EXPORT_OK = qw(launchChainSputnik get_credentials);
 
         return @array;
 
-    };
+    }
+
+1;
