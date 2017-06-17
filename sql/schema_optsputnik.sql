@@ -1,4 +1,6 @@
-CREATE TABLE x_optsputnik
+DROP TABLE &symbols_optsputnik;
+
+CREATE TABLE &symbols_optsputnik
 (
   load_time character(30),
   call_option_symbol character(50),
@@ -23,5 +25,5 @@ CREATE TABLE x_optsputnik
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE x_optsputnik
+ALTER TABLE &symbols_optsputnik
   OWNER TO postgres;
