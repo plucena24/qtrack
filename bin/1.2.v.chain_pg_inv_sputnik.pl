@@ -12,9 +12,9 @@ use JSON;
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
 use lib dirname(dirname abs_path $0) . '/lib/';
-#use OPT::MultChainSputnik qw(launchChainSputnik get_credentials);
+use OPT::MultChainSputnik qw(launchChainSputnik get_credentials);
 
-use OPT::MultChainSputnik qw( launchChainSputnik );
+#use OPT::MultChainSputnik qw( launchChainSputnik );
 
 #print dirname(dirname abs_path($0)) . '/lib/OPT/' . "\n";
 
@@ -101,9 +101,6 @@ while ( my $row =
     my $table = lc(substr($symbol, 0, 1)) . "_optsputnik";
     my $simulation = 1;
 
-    #my $prod_filter = launchChainSputnik($symbol, $table, $simulation);
-#    my $prod_filter = "perl /lib/1.2.v.chain_pg_sputnik.pl @{$row} " . lc(substr(join('', @{$row}), 0, 1)) . "_optsputnik";
-
     @running = threads->list(threads::running);
     print "LOOP $i\n";
     print "  - BEGIN LOOP >> NB running threads = "
@@ -112,7 +109,8 @@ while ( my $row =
     if ( scalar @running < $nb_process ) {
 
         #my $thread = threads->new( sub { system( ${prod_filter} ); } );
-        my $thread = threads->create( launchChainSputnik($symbol, $table, $simulation) );
+#        my $thread = threads->create( launchChainSputnik($symbol, $table, $simulation) );
+        my $thread = threads->create( OPT::MultChainSpuntik::launchChainSputnik($symbol, $table, $simulation) );
         #my $thread = threads->create( launchChainSputnik @{[(split//=>"QQQ q_optionsputnik 1")]} );
 
         push( @Threads, $thread );
