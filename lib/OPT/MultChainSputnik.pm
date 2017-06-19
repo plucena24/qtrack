@@ -21,15 +21,9 @@ our @EXPORT_OK = qw( launchChainSputnik get_credentials );
 #our $VERSION = '0.01';
 #our @EXPORT = qw( launchChainSputnik );
 
-
-sub launchChainSputnik($symbol, $table, $simulation); 
-
-sub launchChainSputnik{
-
+sub launchChainSputnik
+{
 	my ($symbol, $table, $simulation) = @_;
-#        my $symbol = $ARGV[0];
-#        my $table = $ARGV[1];
-#        my $simulation = 1;
 
         #############################################################################################################
         #set variables
@@ -112,15 +106,12 @@ sub launchChainSputnik{
 
                     print "\nchange found - details\n $hms \n";
                     push @keep, $a2[$i];
-                    #print values $a2[$i];
 
                 }
             }
         }
 
  }
-
-
 
     #############################################################################################################
     #thread requests - also this should set PERL_DESTRUCT_LEVEL to 2 - to give memory back
@@ -133,9 +124,7 @@ sub launchChainSputnik{
         my $line = <$fh>;
         chomp($line);
         return ($line)
-
     }
-
 
     #############################################################################################################
     #compare two arrays to see if anything has changed
@@ -162,12 +151,11 @@ sub launchChainSputnik{
     #############################################################################################################
     sub chain_pull{
 
-	my ($symbol, $simulation) = @_;
+	    my ($symbol, $simulation) = @_;
         my $ua = LWP::UserAgent->new();
 
         $ua->cookie_jar({});
 
-        my $symbols = $_[0];
         my ($source, $userid, $pass) = split /~/, get_credentials("/home/zad0xlik/.qtrack.conf");
 
         #Make a https request
@@ -185,23 +173,27 @@ sub launchChainSputnik{
 
         $url = 'https://apis.tdameritrade.com/apps/200/'.
                'OptionChain?source='.$source.
-               '&symbol='.$symbols.
+               '&symbol='.$symbol.
                '&quotes=true';
 
-        $response = $ua->get($url);
+        use Data::Dump;
+
+        $response = $ua->get($url); die "can't get $url --", $response->status_line
+            unless $response->is_success;
+
+
+        my $xs = XML::Simple->new();
+        my $ref; # = $xs->XMLin($response->content, ForceArray => ['optionchain'], KeyAttr => {});
 
         #if server doesnt reply leave sub and try again
         if ($response->is_success) {
-                #would be more effecient to change to scalar - $response->content_ref();
-                #my $buf = $response->content;
-                my $buf = $response->content_ref();
+
+            $ref = $xs->XMLin($response->content, ForceArray => ['optionchain'], KeyAttr => {});
+
         } else {
                 print "\n ...server not reached...\n";
                 return 1;
         }
-
-        my $xs = XML::Simple->new();
-        my $ref = $xs->XMLin($response->content, ForceArray => ['optionchain'], KeyAttr => {});
 
         #check if anyhing came back else exist and re-request
         #unless (@{ $val // [] }) {
@@ -227,15 +219,11 @@ sub launchChainSputnik{
 
                 my @child = @{$_->{'option-strike'}};
 
-                ##count number of children in a node
-                my $ctrcount = scalar(grep {defined $_} @{$_->{'option-strike'}});
-
                 foreach (@child) {
 
                 #############################################################################################################
                 #set simumation for after hours
                 #############################################################################################################
-
                 if ($simulation == 1) {
                     if (int(rand(2)) == 1) {
                         $sc_volume = int(rand(10)) + $_->{call}->{'volume'};
@@ -277,14 +265,14 @@ sub launchChainSputnik{
 
                         push @{ $array_ref }, "load_time";
                         push @{ $array_ref }, "$_->{call}->{'option-symbol'}";
-			push @{ $array_ref }, "$lastUnderlyingPrice";
+			            push @{ $array_ref }, "$lastUnderlyingPrice";
                         push @{ $array_ref }, "$call_bid";
                         push @{ $array_ref }, "$call_ask";
                         push @{ $array_ref }, "$_->{call}->{'bid-ask-size'}";
                         push @{ $array_ref }, "$_->{call}->{'last'}";
                         push @{ $array_ref }, "$call_delta";
                         push @{ $array_ref }, "$sc_volume";
-			push @{ $array_ref }, "$call_implied_volatility";
+			            push @{ $array_ref }, "$call_implied_volatility";
                         push @{ $array_ref }, "$call_open_interest";
                         push @{ $array_ref }, "$put_bid";
                         push @{ $array_ref }, "$put_ask";
@@ -292,10 +280,10 @@ sub launchChainSputnik{
                         push @{ $array_ref }, "$_->{put}->{'last'}";
                         push @{ $array_ref }, "$put_delta";
                         push @{ $array_ref }, "$sp_volume";
-			push @{ $array_ref }, "$put_implied_volatility";
+			            push @{ $array_ref }, "$put_implied_volatility";
                         push @{ $array_ref }, "$put_open_interest";
 
-                        use warnings;
+                    use warnings;
 
                         foreach my $array_ref (@{$array_ref})
                         {
