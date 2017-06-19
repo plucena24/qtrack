@@ -61,7 +61,14 @@ my $db = DBI->connect($dbInfo,
 
 my $sth = $db->prepare( "
        select symbol from symbols
-       where symbol in ('BABA');
+       where symbol in ('BABA')
+       union all
+       select symbol from symbols
+       where symbol in ('BABA')
+       union all
+       select symbol from symbols
+       where symbol in ('BABA')
+       ;
 	")
   or die(qq(Can't prepare COLUMN query for " . $sql_table "));
 
@@ -78,7 +85,8 @@ $cth->execute()
   or die qq(Can't execute COLUMN " . $sql_table ");
 
 my @cnt = $cth->fetchrow_array;
-$nb_process = $cnt[0];
+#$nb_process = $cnt[0];
+$nb_process = 3;
 
 my $JSON = JSON->new->utf8; $JSON->convert_blessed(1);
 
@@ -100,7 +108,7 @@ while ( my $row =
 
     if ( scalar @running < $nb_process ) {
 
-        my $thread = threads->create( OPT::MultChainSpuntik::launchChainSputnik($symbol, $table, $simulation) );
+        my $thread = threads->create( sub { OPT::MultChainSpuntik::launchChainSputnik($symbol, $table, $simulation) });
         push( @Threads, $thread );
         my $tid = $thread->tid;
         print "  - starting thread $tid\n";
