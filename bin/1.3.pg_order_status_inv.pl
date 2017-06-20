@@ -12,7 +12,7 @@ use JSON;
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
 use lib dirname(dirname abs_path $0) . '/lib/';
-use OPT::MultChainSputnik qw(launchChainSputnik get_credentials);
+use OPT::OrderStatus qw(trackOrderStatus);
 
 
 package Emp;
@@ -97,9 +97,9 @@ while ( my $row =
     || shift( @{ $rowcache = $sth->fetchall_arrayref( undef, $max_rows ) } ) )
 {
 
-    my $symbol = join('', @{$row});
-    my $table = lc(substr($symbol, 0, 1)) . "_optsputnik";
-    my $simulation = 0;
+    my $table = "orderstatus";
+#    my $symbol = join('', @{$row});
+#    my $simulation = 0;
 
     @running = threads->list(threads::running);
     print "LOOP $i\n";
@@ -108,7 +108,7 @@ while ( my $row =
 
     if ( scalar @running < $nb_process ) {
 
-        my $thread = threads->create( sub { OPT::MultChainSpuntik::launchChainSputnik($symbol, $table, $simulation) });
+        my $thread = threads->create( sub { OPT::OrderStatus::trackOrderStatus($table) });
         push( @Threads, $thread );
         my $tid = $thread->tid;
         print "  - starting thread $tid\n";

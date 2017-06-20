@@ -104,7 +104,7 @@ sub launchChainSputnik
                 @load = compare(\@array1, \@array2);
                 if (scalar(grep {defined $_} @load) > 0) {
 
-                    print "\nchange found - details\n $hms \n";
+#                    print "\nchange found - details\n $hms \n";
                     push @keep, $a2[$i];
 
                 }
@@ -176,8 +176,6 @@ sub launchChainSputnik
                '&symbol='.$symbol.
                '&quotes=true';
 
-        use Data::Dump;
-
         $response = $ua->get($url); die "can't get $url --", $response->status_line
             unless $response->is_success;
 
@@ -204,7 +202,7 @@ sub launchChainSputnik
                 return 1;
         }
 
-	my $lastUnderlyingPrice = $ref->{'option-chain-results'}->{'last'};
+	    my $lastUnderlyingPrice = $ref->{'option-chain-results'}->{'last'};
         my @result = @{$ref->{'option-chain-results'}->{'option-date'}};
 
         #Declare array to store XML response after being formatted
