@@ -59,13 +59,15 @@ my $db = DBI->connect($dbInfo,
     {AutoCommit=>1,RaiseError=>1,PrintError=>0}
 ) || die "Database connection not made: $DBI::errstr";
 
+
+#union all
+#        select symbol from symbols
+#                        where symbol in ('BABA')
+#union all
+#        select symbol from symbols
+#                        where symbol in ('BABA')
+
 my $sth = $db->prepare( "
-       select symbol from symbols
-       where symbol in ('BABA')
-       union all
-       select symbol from symbols
-       where symbol in ('BABA')
-       union all
        select symbol from symbols
        where symbol in ('BABA')
        ;
@@ -86,7 +88,7 @@ $cth->execute()
 
 my @cnt = $cth->fetchrow_array;
 #$nb_process = $cnt[0];
-$nb_process = 3;
+$nb_process = 1;
 
 my $JSON = JSON->new->utf8; $JSON->convert_blessed(1);
 
