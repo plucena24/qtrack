@@ -5,7 +5,7 @@ use XML::Simple;
 use XML::Parser;
 use DBI;
 #use Data::Dumper;
-use Data::Dump;
+use Data::Dump 'dump';
 use LWP::UserAgent;
 use DateTime;
 use Benchmark qw( cmpthese );
@@ -337,8 +337,107 @@ sub trackOrderStatus
         print "day_equity_call_value: " . $day_equity_call_value . "\n";
 
 
-        my @result = @{$ref->{'BalancePositions'}};
+        my @stocks = $ref->{'positions'}->{'stocks'}->{'position'};
 
+        foreach(@stocks)
+        {
+
+            my @position = @{$_};
+
+                foreach(@position)
+                {
+                    print "\n";
+                    print $_->{'account-type'};
+                    print "\n";
+                    print $_->{'average-price'};
+                    print "\n";
+                    print $_->{'bond-factor'};
+                    print "\n";
+                    print $_->{'close-price'};
+                    print "\n";
+                    print $_->{'current-value'};
+                    print "\n";
+                    print $_->{'maintenance-requirement'};
+                    print "\n";
+                    print $_->{'position-type'};
+                    print "\n";
+                    print $_->{'quantity'};
+                    print "\n";
+
+                    my @quote = $_->{'quote'};
+                    foreach (@quote)
+                    {
+                        print "\n";
+                        print $_->{'ask'};
+                        print "\n";
+                        print $_->{'asset-type'};
+                        print "\n";
+                        print $_->{'bid'};
+                        print "\n";
+                        print $_->{'bid-ask-size'};
+                        print "\n";
+                        print $_->{'change'};
+                        print "\n";
+                        print $_->{'change-percent'};
+                        print "\n";
+                        print $_->{'close'};
+                        print "\n";
+                        print $_->{'exchange'};
+                        print "\n";
+                        print $_->{'high'};
+                        print "\n";
+                        print $_->{'last'};
+                        print "\n";
+                        print $_->{'last-trade-date'};
+                        print "\n";
+                        print $_->{'last-trade-size'};
+                        print "\n";
+                        print $_->{'low'};
+                        print "\n";
+                        print $_->{'open'};
+                        print "\n";
+                        print $_->{'real-time'};
+                        print "\n";
+                        print $_->{'symbol'};
+                        print "\n";
+                        print $_->{'volume'};
+                        print "\n";
+                        print $_->{'year-high'};
+                        print "\n";
+                        print $_->{'year-low'};
+                        print "\n";
+                    }
+
+                    my @security = $_->{'security'};
+                    foreach (@security)
+                    {
+                        print "\n";
+                        print $_->{'asset-type'};
+                        print "\n";
+                        print $_->{'cusip'};
+                        print "\n";
+                        print $_->{'description'};
+                        print "\n";
+                        print $_->{'symbol'};
+                        print "\n";
+                        print $_->{'symbol-with-type-prefix'};
+                        print "\n";
+
+                    }
+
+                }
+
+            dump $_;
+
+        }
+
+
+#        print "stock_quantity: " . $stock_quantity . "\n";
+
+        my @result = $ref->{'positions'}->{'stocks'};
+#        print $ref->{'positions'}->{'stocks'}->{'position'}->{'quantity'};
+
+#        print "--------------------------------- \n";
         #Declare array to store XML response after being formatted
 #        my $array_ref;
         my @array;
@@ -354,6 +453,10 @@ sub trackOrderStatus
 #                foreach (@child) {
 #
 #                #############################################################################################################
+
+                        my $quantity = "$_->{'position'}->{'quantity'}";
+                        print "--------------------------------- \n";
+                        print "quantity: " . $quantity . "\n";
 #
 #                        my $call_bid = "$_->{call}->{'bid'}";
 #                        my $call_ask = "$_->{call}->{'ask'}";
@@ -388,7 +491,7 @@ sub trackOrderStatus
 #                        push @{ $array_ref }, "$_->{call}->{'last'}";
 #                        push @{ $array_ref }, "$call_delta";
 #                        push @{ $array_ref }, "$sc_volume";
-#			            push @{ $array_ref }, "$call_implied_volatility";
+#                        push @{ $array_ref }, "$call_implied_volatility";
 #                        push @{ $array_ref }, "$call_open_interest";
 #                        push @{ $array_ref }, "$put_bid";
 #                        push @{ $array_ref }, "$put_ask";
