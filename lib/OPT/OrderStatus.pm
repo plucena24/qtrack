@@ -238,7 +238,6 @@ sub trackOrderStatus
                 return 1;
         }
 
-#xx
         my $cash_balance_current = $ref->{'balance'}->{'cash-balance'}->{'current'};
         print "cash_balance_current: " . $cash_balance_current . "\n";
         my $margin_balance_current = $ref->{'balance'}->{'margin-balance'}->{'current'};
