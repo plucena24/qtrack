@@ -1,0 +1,220 @@
+
+#        my $lastUnderlyingPrice = $ref->{'option-chain-results'}->{'last'};
+#        my $account_id = $ref->{'balance'}->{'account-id'};
+#        my $cash_balance_initial = $ref->{'balance'}->{'cash-balance'}->{'initial'};
+
+
+        #my $cash_balance_change = $ref->{'balance'}->{'cash-balance'}->{'change'};
+        #my $mm_balance_initial = $ref->{'balance'}->{'money-market-balance'}->{'initial'};
+        #my $mm_balance_current = $ref->{'balance'}->{'money-market-balance'}->{'current'};
+        #my $mm_balance_change = $ref->{'balance'}->{'money-market-balance'}->{'change'};
+        #my $savings_balance_current = $ref->{'balance'}->{'savings-balance'}->{'current'};
+        #my $ls_value_initial = $ref->{'balance'}->{'long-stock-value'}->{'initial'};
+        #my $ls_value_current = $ref->{'balance'}->{'long-stock-value'}->{'current'};
+        #my $ls_value_change = $ref->{'balance'}->{'long-stock-value'}->{'change'};
+        #my $lo_value_initial = $ref->{'balance'}->{'long-option-value'}->{'initial'};
+        #my $lo_value_current = $ref->{'balance'}->{'long-option-value'}->{'current'};
+        #my $lo_value_change = $ref->{'balance'}->{'long-option-value'}->{'change'};
+        #my $so_value_initial = $ref->{'balance'}->{'short-option-value'}->{'initial'};
+        #my $so_value_current = $ref->{'balance'}->{'short-option-value'}->{'current'};
+        #my $so_value_change = $ref->{'balance'}->{'short-option-value'}->{'change'};
+        #my $mf_value_initial = $ref->{'balance'}->{'mutual-fund-value'}->{'initial'};
+        #my $mf_value_current = $ref->{'balance'}->{'mutual-fund-value'}->{'current'};
+        #my $mf_value_change = $ref->{'balance'}->{'mutual-fund-value'}->{'change'};
+        #my $bond_value_initial = $ref->{'balance'}->{'bond-value'}->{'initial'};
+        #my $bond_value_current = $ref->{'balance'}->{'bond-value'}->{'current'};
+        #my $bond_value_change = $ref->{'balance'}->{'bond-value'}->{'change'};
+        #my $account_value_initial = $ref->{'balance'}->{'account-value'}->{'initial'};
+
+
+
+        #my $account_value_change = $ref->{'balance'}->{'account-value'}->{'change'};
+        #my $pending_deposits_initial = $ref->{'balance'}->{'pending-deposits'}->{'initial'};
+        #my $pending_deposits_current = $ref->{'balance'}->{'pending-deposits'}->{'current'};
+        #my $pending_deposits_change = $ref->{'balance'}->{'pending-deposits'}->{'change'};
+        #my $in_call = $ref->{'balance'}->{'in-call'};
+        #my $in_potential_call = $ref->{'balance'}->{'in-potential-call'};
+
+        #print "account_id: " . $account_id . "\n";
+        #print "cash_balance_initial: " . $cash_balance_initial . "\n";
+
+        #print "cash_balance_change: " . $cash_balance_change . "\n";
+        #print "mm_balance_initial: " . $mm_balance_initial . "\n";
+        #print "mm_balance_current: " . $mm_balance_current . "\n";
+        #print "mm_balance_change: " . $mm_balance_change . "\n";
+        #print "savings_balance_current: " . $savings_balance_current . "\n";
+        #print "ls_value_initial: " . $ls_value_initial . "\n";
+        #print "ls_value_current: " . $ls_value_current . "\n";
+        #print "ls_value_change: " . $ls_value_change . "\n";
+        #print "lo_value_initial: " . $lo_value_initial . "\n";
+        #print "lo_value_current: " . $lo_value_current . "\n";
+        #print "lo_value_change: " . $lo_value_change . "\n";
+        #print "so_value_initial: " . $so_value_initial . "\n";
+        #print "so_value_current: " . $so_value_current . "\n";
+        #print "so_value_change: " . $so_value_change . "\n";
+        #print "mf_value_initial: " . $mf_value_initial . "\n";
+        #print "mf_value_current: " . $mf_value_current . "\n";
+        #print "mf_value_change: " . $mf_value_change . "\n";
+        #print "bond_value_initial: " . $bond_value_initial . "\n";
+        #print "bond_value_current: " . $bond_value_current . "\n";
+        #print "bond_value_change: " . $bond_value_change . "\n";
+        #print "account_value_initial: " . $account_value_initial . "\n";
+
+        #print "account_value_change: " . $account_value_change . "\n";
+        #print "pending_deposits_initial: " . $pending_deposits_initial . "\n";
+        #print "pending_deposits_current: " . $pending_deposits_current . "\n";
+        #print "pending_deposits_change: " . $pending_deposits_change . "\n";
+        #print "in_call: " . $in_call . "\n";
+        #print "in_potential_call: " . $in_potential_call . "\n";
+
+        #my $short_balance_initial = $ref->{'balance'}->{'short-balance'}->{'initial'};
+        #my $short_balance_current = $ref->{'balance'}->{'short-balance'}->{'current'};
+        #my $short_balance_change = $ref->{'balance'}->{'short-balance'}->{'change'};
+        #my $margin_balance_initial = $ref->{'balance'}->{'margin-balance'}->{'initial'};
+
+
+#        my $margin_balance_change = $ref->{'balance'}->{'margin-balance'}->{'change'};
+#        my $short_stock_initial = $ref->{'balance'}->{'short-stock-value'}->{'initial'};
+#        my $short_stock_current = $ref->{'balance'}->{'short-stock-value'}->{'current'};
+#        my $short_stock_change = $ref->{'balance'}->{'short-stock-value'}->{'change'};
+#        my $long_marginable_initial = $ref->{'balance'}->{'long-marginable-value'}->{'initial'};
+#        my $long_marginable_current = $ref->{'balance'}->{'long-marginable-value'}->{'current'};
+#        my $long_marginable_change = $ref->{'balance'}->{'long-marginable-value'}->{'change'};
+#        my $short_marginable_initial = $ref->{'balance'}->{'short-marginable-value'}->{'initial'};
+#        my $short_marginable_current = $ref->{'balance'}->{'short-marginable-value'}->{'current'};
+#        my $short_marginable_change = $ref->{'balance'}->{'short-marginable-value'}->{'change'};
+#        my $margin_equity_initial = $ref->{'balance'}->{'margin-equity'}->{'initial'};
+#        my $margin_equity_current = $ref->{'balance'}->{'margin-equity'}->{'current'};
+#        my $margin_equity_change = $ref->{'balance'}->{'margin-equity'}->{'change'};
+#        my $equity_percentage_initial = $ref->{'balance'}->{'equity-percentage'}->{'initial'};
+#        my $equity_percentage_current = $ref->{'balance'}->{'equity-percentage'}->{'current'};
+#        my $equity_percentage_change = $ref->{'balance'}->{'equity-percentage'}->{'change'};
+#        my $option_buying_power = $ref->{'balance'}->{'option-buying-power'};
+#        my $stock_buying_power = $ref->{'balance'}->{'stock-buying-power'};
+#        my $day_trading_buying_power = $ref->{'balance'}->{'day-trading-buying-power'};
+#        my $available_funds_for_trading = $ref->{'balance'}->{'available-funds-for-trading'};
+#        my $maintenance_req_initial = $ref->{'balance'}->{'maintenance-requirement'}->{'initial'};
+#        my $maintenance_req_current = $ref->{'balance'}->{'maintenance-requirement'}->{'current'};
+#        my $maintenance_req_change = $ref->{'balance'}->{'maintenance-requirement'}->{'change'};
+#        my $maintenance_call_value_initial = $ref->{'balance'}->{'maintenance-call-value'}->{'initial'};
+#        my $maintenance_call_value_current = $ref->{'balance'}->{'maintenance-call-value'}->{'current'};
+#        my $maintenance_call_value_potential = $ref->{'balance'}->{'maintenance-call-value'}->{'potential'};
+#        my $reg_t_call_value_initial = $ref->{'balance'}->{'regulation-t-call-value'}->{'initial'};
+#        my $reg_t_call_value_current = $ref->{'balance'}->{'regulation-t-call-value'}->{'current'};
+#        my $reg_t_call_value_potential = $ref->{'balance'}->{'regulation-t-call-value'}->{'potential'};
+#        my $day_trading_call_value_potential = $ref->{'balance'}->{'day-trading-call-value'}->{'potential'};
+#        my $day_trading_call_value_initial = $ref->{'balance'}->{'day-trading-call-value'}->{'initial'};
+#        my $day_equity_call_value = $ref->{'balance'}->{'day-equity-call-value'};
+
+#        print "short_balance_initial: " . $short_balance_initial . "\n";
+#        print "short_balance_current: " . $short_balance_current . "\n";
+#        print "short_balance_change: " . $short_balance_change . "\n";
+#        print "margin_balance_initial: " . $margin_balance_initial . "\n";
+
+#        print "margin_balance_change: " . $margin_balance_change . "\n";
+#        print "short_stock_initial: " . $short_stock_initial . "\n";
+#        print "short_stock_current: " . $short_stock_current . "\n";
+#        print "short_stock_change: " . $short_stock_change . "\n";
+#        print "long_marginable_initial: " . $long_marginable_initial . "\n";
+#        print "long_marginable_current: " . $long_marginable_current . "\n";
+#        print "long_marginable_change: " . $long_marginable_change . "\n";
+#        print "short_marginable_initial: " . $short_marginable_initial . "\n";
+#        print "short_marginable_current: " . $short_marginable_current . "\n";
+#        print "short_marginable_change: " . $short_marginable_change . "\n";
+#        print "margin_equity_initial: " . $margin_equity_initial . "\n";
+#        print "margin_equity_current: " . $margin_equity_current . "\n";
+#        print "margin_equity_change: " . $margin_equity_change . "\n";
+#        print "equeity_percentage_initial: " . $equity_percentage_initial . "\n";
+#        print "equity_percentage_current: " . $equity_percentage_current . "\n";
+#        print "equity_percentage_change: " . $equity_percentage_change . "\n";
+#        print "option_buying_power: " . $option_buying_power . "\n";
+#        print "stock_buying_power: " . $stock_buying_power . "\n";
+#        print "day_trading_buying_power: " . $day_trading_buying_power . "\n";
+#        print "available_funds_for_trading: " . $available_funds_for_trading . "\n";
+#        print "maintenance_req_initial: " . $maintenance_req_initial . "\n";
+#        print "maintenance_req_current: " . $maintenance_req_current . "\n";
+#        print "maintenance_req_change: " . $maintenance_req_change . "\n";
+#        print "maintenance_call_value_initial: " . $maintenance_call_value_initial . "\n";
+#        print "maintenance_call_value_current: " . $maintenance_call_value_current . "\n";
+#        print "maintenance_call_value_potential: " . $maintenance_call_value_potential . "\n";
+#        print "reg_t_call_value_initial: " . $reg_t_call_value_initial . "\n";
+#        print "reg_t_call_value_current: " . $reg_t_call_value_current . "\n";
+#        print "reg_t_call_value_potential: " . $reg_t_call_value_potential . "\n";
+#        print "day_trading_call_value_potential: " . $day_trading_call_value_potential . "\n";
+#        print "day_trading_call_value_initial: " . $day_trading_call_value_initial . "\n";
+#        print "day_equity_call_value: " . $day_equity_call_value . "\n";
+
+
+#                    print "\n";
+#                    print $_->{'account-type'};
+#                    print "\n";
+#                    print $_->{'average-price'};
+#                    print "\n";
+#                    print $_->{'bond-factor'};
+#                    print "\n";
+#                    print $_->{'close-price'};
+#                    print "\n";
+#                    print $_->{'current-value'};
+#                    print "\n";
+#                    print $_->{'maintenance-requirement'};
+#                    print "\n";
+#                    print $_->{'position-type'};
+#                    print "\n";
+
+#                        print "\n";
+#                        print $_->{'ask'};
+#                        print "\n";
+#                        print $_->{'asset-type'};
+#                        print "\n";
+#                        print $_->{'bid'};
+#                        print "\n";
+#                        print $_->{'bid-ask-size'};
+#                        print "\n";
+#                        print $_->{'change'};
+#                        print "\n";
+#                        print $_->{'change-percent'};
+#                        print "\n";
+#                        print $_->{'close'};
+#                        print "\n";
+#                        print $_->{'exchange'};
+#                        print "\n";
+#                        print $_->{'high'};
+#                        print "\n";
+#                        print $_->{'last'};
+#                        print "\n";
+#                        print $_->{'last-trade-date'};
+#                        print "\n";
+#                        print $_->{'last-trade-size'};
+#                        print "\n";
+#                        print $_->{'low'};
+#                        print "\n";
+#                        print $_->{'open'};
+#                        print "\n";
+#                        print $_->{'real-time'};
+#                        print "\n";
+#                        print $_->{'symbol'};
+#                        print "\n";
+#                        print $_->{'volume'};
+#                        print "\n";
+#                        print $_->{'year-high'};
+#                        print "\n";
+#                        print $_->{'year-low'};
+#                        print "\n";
+
+
+#                    my @security = $_->{'security'};
+#                    foreach (@security)
+#                    {
+#                        print "\n";
+#                        print $_->{'asset-type'};
+#                        print "\n";
+#                        print $_->{'cusip'};
+#                        print "\n";
+#                        print $_->{'description'};
+#                        print "\n";
+#                        print $_->{'symbol'};
+#                        print "\n";
+#                        print $_->{'symbol-with-type-prefix'};
+#                        print "\n";
+#
+#                    }
