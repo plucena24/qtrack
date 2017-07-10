@@ -22,6 +22,9 @@ our @EXPORT_OK = qw( trackOrderStatus );
 #our $VERSION = '0.01';
 #our @EXPORT = qw( launchChainSputnik );
 
+my $stable = 'balpos_stocks';
+my $otable = 'balpos_options';
+
 sub trackOrderStatus
 {
 
@@ -52,7 +55,8 @@ sub trackOrderStatus
             {AutoCommit=>1,RaiseError=>1,PrintError=>0}
         ) || die "Database connection not made: $DBI::errstr";
 
-#        my $ins = $dbh2->prepare("INSERT INTO ". $table ." (load_time, call_option_symbol, lastUnderlyingPrice, call_bid, call_ask, call_bid_ask_size, call_last, call_delta, call_volume, call_implied_volatility, call_open_interest, put_bid, put_ask, put_bid_ask_size, put_last, put_delta, put_volume, put_implied_volatility, put_open_interest) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        my $sins = $dbh2->prepare("INSERT INTO ". $stable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, stock_symbol, stocks_position_type, stocks_quantity, stock_last) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+        my $oins = $dbh2->prepare("INSERT INTO ". $otable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, options_symbol, options_quantity, options_position_type, options_average_price, options_current_value, options_put_call, options_last) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         #############################################################################################################
 
         while (42) {
@@ -73,12 +77,12 @@ sub trackOrderStatus
                 foreach my $row (@{skeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
-                    #print values $row;
+#                    print values $row;
                 }
 
                 #insert changese into db
                 my @stuple_status;
-#                $sins->execute_for_fetch( sub { shift @skeep }, \@stuple_status);
+                $sins->execute_for_fetch( sub { shift @skeep }, \@stuple_status);
 
             }
 
@@ -87,18 +91,18 @@ sub trackOrderStatus
                 #move data to array1 - change shallow copy to deep copy
                 @oa1 = map { [ @$_ ] } @oa2;
 
-                #print $a1[1][1];
+#                print $oa1[1][1];
 
                 #replace date time
                 foreach my $row (@{okeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
-                    #print values $row;
+                    print values $row;
                 }
 
                 #insert changese into db
                 my @otuple_status;
-#                $oins->execute_for_fetch( sub { shift @okeep }, \@otuple_status);
+                $oins->execute_for_fetch( sub { shift @okeep }, \@otuple_status);
 
             }
 
@@ -117,8 +121,11 @@ sub trackOrderStatus
             do {
                 #loop until you get answer
 #                @a2 = order_pull();
-                (@sa2,  @oa2) = order_pull();
-            } while (@sa2 == 1);
+                my ($sarray, $oarray) = order_pull();
+                @sa2 = @{$sarray};
+                @oa2 = @{$oarray};
+#                print ${$oarray}[0][1];
+            } while (@oa2 == 1);
 
 
             for my $i (0..$#sa1)
@@ -222,7 +229,7 @@ sub trackOrderStatus
 
             $ref = $xs->XMLin($response->content, ForceArray => ['BalancePositions'], KeyAttr => {});
 
-            print $response->content;
+#            print $response->content;
 
         } else {
                 print "\n ...server not reached...\n";
@@ -239,11 +246,11 @@ sub trackOrderStatus
         }
 
         my $cash_balance_current = $ref->{'balance'}->{'cash-balance'}->{'current'};
-        print "cash_balance_current: " . $cash_balance_current . "\n";
+#        print "cash_balance_current: " . $cash_balance_current . "\n";
         my $margin_balance_current = $ref->{'balance'}->{'margin-balance'}->{'current'};
-        print "margin_balance_current: " . $margin_balance_current . "\n";
+#        print "margin_balance_current: " . $margin_balance_current . "\n";
         my $account_value_current = $ref->{'balance'}->{'account-value'}->{'current'};
-        print "account_value_current: " . $account_value_current . "\n";
+#        print "account_value_current: " . $account_value_current . "\n";
 
 
         my @stocks = $ref->{'positions'}->{'stocks'}->{'position'};
@@ -259,20 +266,19 @@ sub trackOrderStatus
                 foreach(@position)
                 {
                     my $stocks_position_type =  $_->{'position-type'};
-                    print "stocks_position_type: " . $stocks_position_type . "\n";
+#                    print "stocks_position_type: " . $stocks_position_type . "\n";
 
-                    my $stocks_quantity =  $_->{'quantity'};
-                    print "stocks_quantity: " . $stocks_quantity . "\n";
+                    my $stocks_quantity =  $_->{'quantity'} + int(rand(90));
+#                    print "stocks_quantity: " . $stocks_quantity . "\n";
 
                     my @quote = $_->{'quote'};
                     foreach (@quote)
                     {
                         my $stock_symbol = $_->{'symbol'};
-                        print "stock_symbol: " . $stock_symbol . "\n";
-
+#                        print "stock_symbol: " . $stock_symbol . "\n";
 
                         my $stock_last = $_->{'last'};
-                        print "stock_last: " . $stock_last . "\n";
+#                        print "stock_last: " . $stock_last . "\n";
 
                         push @{ $stocks_ref }, "load_time";
                         push @{ $stocks_ref }, "$cash_balance_current";
@@ -296,7 +302,7 @@ sub trackOrderStatus
 #                    dump $_;
                 }
 
-            print "------------------------------------\n"
+#            print "------------------------------------\n"
 
         }
 
@@ -314,20 +320,20 @@ sub trackOrderStatus
             foreach(@position)
             {
 
-                my $options_quantity =  $_->{'quantity'};
+                my $options_quantity =  $_->{'quantity'} + int(rand(90));
                 print "options_quantity: " . $options_quantity . "\n";
 
                 my $options_position_type = $_->{'position-type'};
-                print "options_position_type: " . $options_position_type . "\n";
+#                print "options_position_type: " . $options_position_type . "\n";
 
                 my $options_average_price = $_->{'average-price'};
-                print "options_average_price: " . $options_average_price . "\n";
+#                print "options_average_price: " . $options_average_price . "\n";
 
                 my $options_current_value = $_->{'current-value'};
-                print "options_current_value: " . $options_current_value . "\n";
+#                print "options_current_value: " . $options_current_value . "\n";
 
                 my $options_put_call = $_->{'put-call'};
-                print "options_put_call: " . $options_put_call . "\n";
+#                print "options_put_call: " . $options_put_call . "\n";
 
 
                 my @quote = $_->{'quote'};
@@ -335,10 +341,10 @@ sub trackOrderStatus
                 {
 
                     my $options_symbol = $_->{'symbol'};
-                    print "options_symbol: " . $options_symbol . "\n";
+#                    print "options_symbol: " . $options_symbol . "\n";
 
                     my $options_last = $_->{'last'};
-                    print "options_last: " . $options_last . "\n";
+#                    print "options_last: " . $options_last . "\n";
 
                     push @{ $options_ref }, "load_time";
                     push @{ $options_ref }, "$cash_balance_current";
@@ -365,99 +371,10 @@ sub trackOrderStatus
 
             }
 
-#            dump $_;
         }
 
-        return (@sarray, @oarray);
+        return (\@sarray, \@oarray);
 
     }
 
 1;
-
-#        print "stock_quantity: " . $stock_quantity . "\n";
-
-#        my @result = $ref->{'positions'}->{'stocks'};
-#        print $ref->{'positions'}->{'stocks'}->{'position'}->{'quantity'};
-
-#        print "--------------------------------- \n";
-        #Declare array to store XML response after being formatted
-
-#        my $array_ref;
-#        my @array;
-#        my $row = 0;
-#        my $sc_volume;
-#        my $sp_volume;
-
-        #Loop through xml results
-#        foreach (@result) {
-
-#                my @child = @{$_->{'option-strike'}};
-
-#                foreach (@child) {
-#
-#                #############################################################################################################
-
-#                        my $quantity = "$_->{'position'}->{'quantity'}";
-#                        print "--------------------------------- \n";
-#                        print "quantity: " . $quantity . "\n";
-#
-#                        my $call_bid = "$_->{call}->{'bid'}";
-#                        my $call_ask = "$_->{call}->{'ask'}";
-#                        my $put_bid = "$_->{put}->{'bid'}";
-#                        my $put_ask = "$_->{put}->{'ask'}";
-#                        my $call_delta= "$_->{call}->{'delta'}";
-#                        my $put_delta= "$_->{put}->{'delta'}";
-#                    	 my $call_implied_volatility = "$_->{call}->{'implied-volatility'}";
-#                    	 my $put_implied_volatility = "$_->{put}->{'implied-volatility'}";
-#                        my $call_open_interest = "$_->{call}->{'open-interest'}" || 0;
-#                        my $put_open_interest = "$_->{put}->{'open-interest'}" || 0;
-#
-#                        $call_bid =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $call_ask =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $put_bid =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $put_ask =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $call_delta =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $put_delta =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                    	 $call_implied_volatility =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                    	 $put_implied_volatility =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $call_open_interest =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#                        $put_open_interest =~ s/([HASH]+)\(([^)]+)\)/0.00/g;
-#
-#                        no warnings;
-#
-#                        push @{ $array_ref }, "load_time";
-#                        push @{ $array_ref }, "$_->{call}->{'option-symbol'}";
-#			             push @{ $array_ref }, "$lastUnderlyingPrice";
-#                        push @{ $array_ref }, "$call_bid";
-#                        push @{ $array_ref }, "$call_ask";
-#                        push @{ $array_ref }, "$_->{call}->{'bid-ask-size'}";
-#                        push @{ $array_ref }, "$_->{call}->{'last'}";
-#                        push @{ $array_ref }, "$call_delta";
-#                        push @{ $array_ref }, "$sc_volume";
-#                        push @{ $array_ref }, "$call_implied_volatility";
-#                        push @{ $array_ref }, "$call_open_interest";
-#                        push @{ $array_ref }, "$put_bid";
-#                        push @{ $array_ref }, "$put_ask";
-#                        push @{ $array_ref }, "$_->{put}->{'bid-ask-size'}";
-#                        push @{ $array_ref }, "$_->{put}->{'last'}";
-#                        push @{ $array_ref }, "$put_delta";
-#                        push @{ $array_ref }, "$sp_volume";
-#			             push @{ $array_ref }, "$put_implied_volatility";
-#                        push @{ $array_ref }, "$put_open_interest";
-#
-#                    use warnings;
-#
-#                        foreach my $array_ref (@{$array_ref})
-#                        {
-#                                $array_ref =~ s/([HASH]+)\(([^)]+)\)//g;
-#                        }
-#                        push @{$array[$row]}, @{ $array_ref };
-#                        $row++;
-#
-#                        @{ $array_ref } = ();
-#
-#                        }
-
-#                }
-
-
