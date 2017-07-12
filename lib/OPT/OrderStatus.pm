@@ -97,7 +97,7 @@ sub trackOrderStatus
                 foreach my $row (@{okeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
-                    print values $row;
+#                    print values $row;
                 }
 
                 #insert changese into db
@@ -125,14 +125,22 @@ sub trackOrderStatus
                 @sa2 = @{$sarray};
                 @oa2 = @{$oarray};
 #                print ${$oarray}[0][1];
-            } while (@oa2 == 1);
 
+            } while (@sa2 == 1);
+
+#            print @{$sa1[0]} . "\n";
+#            print ${$oarray}[0][1] . "\n";
 
             for my $i (0..$#sa1)
             {
                 undef @sload;
                 @sarray1 = values $sa1[$i];
                 @sarray2 = values $sa2[$i];
+
+#                print @{$sa1[0][$i]};
+                print @sarray1[0];
+                print "\n";
+
                 @sload = compare(\@sarray1, \@sarray2);
                 if (scalar(grep {defined $_} @sload) > 0) {
 
@@ -141,11 +149,17 @@ sub trackOrderStatus
                 }
             }
 
+#            print @{$oa1[1]} . "\n";
+#            print @{$oa2[1]} . "\n";
+
             for my $i (0..$#oa1)
             {
                 undef @oload;
                 @oarray1 = values $oa1[$i];
                 @oarray2 = values $oa2[$i];
+
+                print $oa2[$i];
+
                 @oload = compare(\@oarray1, \@oarray2);
                 if (scalar(grep {defined $_} @oload) > 0) {
 
@@ -321,7 +335,7 @@ sub trackOrderStatus
             {
 
                 my $options_quantity =  $_->{'quantity'} + int(rand(90));
-                print "options_quantity: " . $options_quantity . "\n";
+#                print "options_quantity: " . $options_quantity . "\n";
 
                 my $options_position_type = $_->{'position-type'};
 #                print "options_position_type: " . $options_position_type . "\n";
