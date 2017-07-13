@@ -43,6 +43,7 @@ sub trackOrderStatus
         my (@sa1, @oa1) = order_pull();
         my (@sa2, @oa2) = order_pull();
 
+
         #############################################################################################################
         #connect to db
         #############################################################################################################
@@ -55,7 +56,7 @@ sub trackOrderStatus
             {AutoCommit=>1,RaiseError=>1,PrintError=>0}
         ) || die "Database connection not made: $DBI::errstr";
 
-        my $sins = $dbh2->prepare("INSERT INTO ". $stable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, stock_symbol, stocks_position_type, stocks_quantity, stock_last) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+        my $sins = $dbh2->prepare("INSERT INTO ". $stable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, symbol, position_type, quantity, last) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
         my $oins = $dbh2->prepare("INSERT INTO ". $otable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, options_symbol, options_quantity, options_position_type, options_average_price, options_current_value, options_put_call, options_last) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         #############################################################################################################
 
@@ -77,12 +78,19 @@ sub trackOrderStatus
                 foreach my $row (@{skeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
+#                    print "\n insert: ";
 #                    print values $row;
+#                    print "\n";
                 }
 
+#                print values $skeep[0];
                 #insert changese into db
-                my @stuple_status;
-                $sins->execute_for_fetch( sub { shift @skeep }, \@stuple_status);
+                my @tuple_status;
+                $sins->execute_for_fetch( sub { shift @skeep }, \@tuple_status);
+#                print "\n shift \n";
+#                print values $skeep[0];
+#                $sins->execute_for_fetch( sub { shift $skeep[0] }, \@tuple_status);
+#                print @tuple_status;
 
             }
 
@@ -124,7 +132,12 @@ sub trackOrderStatus
                 my ($sarray, $oarray) = order_pull();
                 @sa2 = @{$sarray};
                 @oa2 = @{$oarray};
-#                print ${$oarray}[0][1];
+#                print ${$sarray}[0][1];
+
+#                print values @{$sarray}[0];
+#                print "\n xxxxx \n";
+#                print values $sa2[0];
+#                print "\n xxxxx \n";
 
             } while (@sa2 == 1);
 
@@ -134,17 +147,25 @@ sub trackOrderStatus
             for my $i (0..$#sa1)
             {
                 undef @sload;
-                @sarray1 = values $sa1[$i];
+#                @sarray1 = values $sa1[$i];
+#                @sarray2 = values $sa2[$i];
+                @sarray1 = values @{$sa1[0][$i]};
                 @sarray2 = values $sa2[$i];
 
-#                print @{$sa1[0][$i]};
-                print @sarray1[0];
+                print "\n sa1: ";
+                print @{$sa1[0][$i]};
+                print "\n sa2: ";
+                print values $sa2[$i];
+                print "\n end comp \n";
+#                print @sarray1[0];
                 print "\n";
 
                 @sload = compare(\@sarray1, \@sarray2);
                 if (scalar(grep {defined $_} @sload) > 0) {
 
                     push @skeep, $sa2[$i];
+                    print "\n keep:";
+                    print values $sa2[$i];
 
                 }
             }
