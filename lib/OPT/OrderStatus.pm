@@ -40,8 +40,17 @@ sub trackOrderStatus
         my @oload;
         my @okeep;
 
-        my (@sa1, @oa1) = order_pull();
-        my (@sa2, @oa2) = order_pull();
+#        my (@sa1, @oa1) = order_pull();
+        my ($sarray, $oarray)  = order_pull();
+            my @sa1 = @{$sarray};
+            my @oa1 = @{$oarray};
+        my @sa2;
+        my @oa2;
+
+#        my (@sa2, @oa2) = order_pull();
+#        my ($sarray, $oarray) = order_pull();
+#        @sa2 = @{$sarray};
+#        @oa2 = @{$oarray};
 
 
         #############################################################################################################
@@ -57,7 +66,7 @@ sub trackOrderStatus
         ) || die "Database connection not made: $DBI::errstr";
 
         my $sins = $dbh2->prepare("INSERT INTO ". $stable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, symbol, position_type, quantity, last) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        my $oins = $dbh2->prepare("INSERT INTO ". $otable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, options_symbol, options_quantity, options_position_type, options_average_price, options_current_value, options_put_call, options_last) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        my $oins = $dbh2->prepare("INSERT INTO ". $otable ." (load_time, cash_balance_current, margin_balance_current, account_value_current, symbol, quantity, position_type, average_price, current_value, put_call, last) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         #############################################################################################################
 
         while (42) {
@@ -78,19 +87,11 @@ sub trackOrderStatus
                 foreach my $row (@{skeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
-#                    print "\n insert: ";
-#                    print values $row;
-#                    print "\n";
                 }
 
-#                print values $skeep[0];
                 #insert changese into db
                 my @tuple_status;
                 $sins->execute_for_fetch( sub { shift @skeep }, \@tuple_status);
-#                print "\n shift \n";
-#                print values $skeep[0];
-#                $sins->execute_for_fetch( sub { shift $skeep[0] }, \@tuple_status);
-#                print @tuple_status;
 
             }
 
@@ -135,37 +136,60 @@ sub trackOrderStatus
 #                print ${$sarray}[0][1];
 
 #                print values @{$sarray}[0];
-#                print "\n xxxxx \n";
-#                print values $sa2[0];
-#                print "\n xxxxx \n";
+                print "\n xxxxx \n";
+                print values $oa2[0];
+                print "\n xxxxx \n";
 
             } while (@sa2 == 1);
 
 #            print @{$sa1[0]} . "\n";
 #            print ${$oarray}[0][1] . "\n";
 
+
             for my $i (0..$#sa1)
             {
                 undef @sload;
-#                @sarray1 = values $sa1[$i];
-#                @sarray2 = values $sa2[$i];
-                @sarray1 = values @{$sa1[0][$i]};
+                @sarray1 = values $sa1[$i];
                 @sarray2 = values $sa2[$i];
+#                @sarray1 = values @{$sa1[0][$i]};
+#                @sarray2 = values $sa2[$i];
 
-                print "\n sa1: ";
-                print @{$sa1[0][$i]};
-                print "\n sa2: ";
-                print values $sa2[$i];
-                print "\n end comp \n";
-#                print @sarray1[0];
-                print "\n";
+#                print "\n sa1: ";
+#                print @{$sa1[0][$i]};
+#                print "\n sa2: ";
+#                print values $sa2[$i];
+#                print "\n end comp \n";
+#                print "\n";
 
                 @sload = compare(\@sarray1, \@sarray2);
                 if (scalar(grep {defined $_} @sload) > 0) {
 
                     push @skeep, $sa2[$i];
-                    print "\n keep:";
-                    print values $sa2[$i];
+#                    print "\n keep:";
+#                    print values $sa2[$i];
+
+                }
+            }
+
+            for my $x (0..$#oa1)
+            {
+                undef @oload;
+                #                @oarray1 = values $oa1[$i];
+                #                @oarray2 = values $oa2[$i];
+                #                @oarray1 = values @{$oa1[0][$x]};
+                @oarray1 = values @{$oa1[$x]};
+                @oarray2 = values @{$oa2[$x]};
+
+                print "\n oa1: ";
+                print @{$oa1[$x]};
+                print "\n";
+
+                @oload = compare(\@oarray1, \@oarray2);
+                if (scalar(grep {defined $_} @oload) > 0) {
+
+                    push @okeep, $oa2[$x];
+#                    print "\n keep:";
+#                    print values $oa2[$i];
 
                 }
             }
@@ -173,21 +197,7 @@ sub trackOrderStatus
 #            print @{$oa1[1]} . "\n";
 #            print @{$oa2[1]} . "\n";
 
-            for my $i (0..$#oa1)
-            {
-                undef @oload;
-                @oarray1 = values $oa1[$i];
-                @oarray2 = values $oa2[$i];
 
-                print $oa2[$i];
-
-                @oload = compare(\@oarray1, \@oarray2);
-                if (scalar(grep {defined $_} @oload) > 0) {
-
-                    push @okeep, $oa2[$i];
-
-                }
-            }
 
         }
 
