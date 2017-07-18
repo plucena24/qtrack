@@ -47,12 +47,6 @@ sub trackOrderStatus
         my @sa2;
         my @oa2;
 
-#        my (@sa2, @oa2) = order_pull();
-#        my ($sarray, $oarray) = order_pull();
-#        @sa2 = @{$sarray};
-#        @oa2 = @{$oarray};
-
-
         #############################################################################################################
         #connect to db
         #############################################################################################################
@@ -72,7 +66,6 @@ sub trackOrderStatus
         while (42) {
 
             my $dt = DateTime->now( time_zone => 'America/New_York' );
-            #print "$dt \n";
 
             my $hms = $dt->hms;
 
@@ -100,13 +93,10 @@ sub trackOrderStatus
                 #move data to array1 - change shallow copy to deep copy
                 @oa1 = map { [ @$_ ] } @oa2;
 
-#                print $oa1[1][1];
-
                 #replace date time
                 foreach my $row (@{okeep})
                 {
                     $row->[0] =~ s/load_time/$hms/g;
-#                    print values $row;
                 }
 
                 #insert changese into db
@@ -129,44 +119,22 @@ sub trackOrderStatus
 
             do {
                 #loop until you get answer
-#                @a2 = order_pull();
-                my ($sarray, $oarray) = order_pull();
+                ($sarray, $oarray) = order_pull();
                 @sa2 = @{$sarray};
                 @oa2 = @{$oarray};
-#                print ${$sarray}[0][1];
-
-#                print values @{$sarray}[0];
-                print "\n xxxxx \n";
-                print values $oa2[0];
-                print "\n xxxxx \n";
 
             } while (@sa2 == 1);
-
-#            print @{$sa1[0]} . "\n";
-#            print ${$oarray}[0][1] . "\n";
-
 
             for my $i (0..$#sa1)
             {
                 undef @sload;
                 @sarray1 = values $sa1[$i];
                 @sarray2 = values $sa2[$i];
-#                @sarray1 = values @{$sa1[0][$i]};
-#                @sarray2 = values $sa2[$i];
-
-#                print "\n sa1: ";
-#                print @{$sa1[0][$i]};
-#                print "\n sa2: ";
-#                print values $sa2[$i];
-#                print "\n end comp \n";
-#                print "\n";
 
                 @sload = compare(\@sarray1, \@sarray2);
                 if (scalar(grep {defined $_} @sload) > 0) {
 
                     push @skeep, $sa2[$i];
-#                    print "\n keep:";
-#                    print values $sa2[$i];
 
                 }
             }
@@ -174,30 +142,17 @@ sub trackOrderStatus
             for my $x (0..$#oa1)
             {
                 undef @oload;
-                #                @oarray1 = values $oa1[$i];
-                #                @oarray2 = values $oa2[$i];
-                #                @oarray1 = values @{$oa1[0][$x]};
+
                 @oarray1 = values @{$oa1[$x]};
                 @oarray2 = values @{$oa2[$x]};
-
-                print "\n oa1: ";
-                print @{$oa1[$x]};
-                print "\n";
 
                 @oload = compare(\@oarray1, \@oarray2);
                 if (scalar(grep {defined $_} @oload) > 0) {
 
                     push @okeep, $oa2[$x];
-#                    print "\n keep:";
-#                    print values $oa2[$i];
 
                 }
             }
-
-#            print @{$oa1[1]} . "\n";
-#            print @{$oa2[1]} . "\n";
-
-
 
         }
 
@@ -291,12 +246,8 @@ sub trackOrderStatus
         }
 
         my $cash_balance_current = $ref->{'balance'}->{'cash-balance'}->{'current'};
-#        print "cash_balance_current: " . $cash_balance_current . "\n";
         my $margin_balance_current = $ref->{'balance'}->{'margin-balance'}->{'current'};
-#        print "margin_balance_current: " . $margin_balance_current . "\n";
         my $account_value_current = $ref->{'balance'}->{'account-value'}->{'current'};
-#        print "account_value_current: " . $account_value_current . "\n";
-
 
         my @stocks = $ref->{'positions'}->{'stocks'}->{'position'};
 
@@ -311,19 +262,13 @@ sub trackOrderStatus
                 foreach(@position)
                 {
                     my $stocks_position_type =  $_->{'position-type'};
-#                    print "stocks_position_type: " . $stocks_position_type . "\n";
-
-                    my $stocks_quantity =  $_->{'quantity'} + int(rand(90));
-#                    print "stocks_quantity: " . $stocks_quantity . "\n";
+                    my $stocks_quantity =  $_->{'quantity'}; # + int(rand(90));
 
                     my @quote = $_->{'quote'};
                     foreach (@quote)
                     {
                         my $stock_symbol = $_->{'symbol'};
-#                        print "stock_symbol: " . $stock_symbol . "\n";
-
                         my $stock_last = $_->{'last'};
-#                        print "stock_last: " . $stock_last . "\n";
 
                         push @{ $stocks_ref }, "load_time";
                         push @{ $stocks_ref }, "$cash_balance_current";
@@ -344,10 +289,7 @@ sub trackOrderStatus
                         @{ $stocks_ref } = ();
                     }
 
-#                    dump $_;
                 }
-
-#            print "------------------------------------\n"
 
         }
 
@@ -365,31 +307,18 @@ sub trackOrderStatus
             foreach(@position)
             {
 
-                my $options_quantity =  $_->{'quantity'} + int(rand(90));
-#                print "options_quantity: " . $options_quantity . "\n";
-
+                my $options_quantity =  $_->{'quantity'}; # + int(rand(90));
                 my $options_position_type = $_->{'position-type'};
-#                print "options_position_type: " . $options_position_type . "\n";
-
                 my $options_average_price = $_->{'average-price'};
-#                print "options_average_price: " . $options_average_price . "\n";
-
                 my $options_current_value = $_->{'current-value'};
-#                print "options_current_value: " . $options_current_value . "\n";
-
                 my $options_put_call = $_->{'put-call'};
-#                print "options_put_call: " . $options_put_call . "\n";
-
 
                 my @quote = $_->{'quote'};
                 foreach (@quote)
                 {
 
                     my $options_symbol = $_->{'symbol'};
-#                    print "options_symbol: " . $options_symbol . "\n";
-
                     my $options_last = $_->{'last'};
-#                    print "options_last: " . $options_last . "\n";
 
                     push @{ $options_ref }, "load_time";
                     push @{ $options_ref }, "$cash_balance_current";
