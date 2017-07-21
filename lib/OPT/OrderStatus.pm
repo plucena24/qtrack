@@ -237,9 +237,6 @@ sub trackOrderStatus
         }
 
         #check if anyhing came back else exist and re-request
-        #unless (@{ $val // [] }) {
-        #... # stuff to do if the array is empty
-        #}
         if (not defined $ref->{'balance'}) {
                 print "\n no results came back\n";
                 return 1;
@@ -250,6 +247,7 @@ sub trackOrderStatus
         my $account_value_current = $ref->{'balance'}->{'account-value'}->{'current'};
 
         my @stocks = $ref->{'positions'}->{'stocks'}->{'position'};
+
 
         my @sarray;
         my $stocks_ref;
