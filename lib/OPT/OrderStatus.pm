@@ -149,6 +149,19 @@ sub trackOrderStatus
                 @oload = compare(\@oarray1, \@oarray2);
                 if (scalar(grep {defined $_} @oload) > 0) {
 
+                    print "\n array 1 - \n";
+                    print values @{$oa1[$x]};
+
+                    print "\n array 2 - \n";
+                    print values @{$oa1[$x]};
+
+                    foreach (@oload)
+                    {
+                        print "\n array diff - \n";
+                        print $_[0];
+                    }
+
+
                     push @okeep, $oa2[$x];
 
                 }
@@ -185,7 +198,7 @@ sub trackOrderStatus
         foreach my $element (keys %count) {
             push @{ $count{$element} > 1 ? \@intersection : \@difference }, $element;
         };
-            
+
         return @difference;
         
     }
