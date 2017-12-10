@@ -143,22 +143,24 @@ sub trackOrderStatus
             {
                 undef @oload;
 
-                @oarray1 = values @{$oa1[$x]};
-                @oarray2 = values @{$oa2[$x]};
+                @oarray1 = @{$oa1[$x]};
+                @oarray2 = @{$oa2[$x]};
 
                 @oload = compare(\@oarray1, \@oarray2);
                 if (scalar(grep {defined $_} @oload) > 0) {
 
-                    print "\n array 1 - \n";
-                    print values @{$oa1[$x]};
+                    print "\n array 1 - ";
+#                    print values @{$oa1[$x]};
+                    print @{oarray1};
 
-                    print "\n array 2 - \n";
-                    print values @{$oa1[$x]};
+                    print "\n array 2 - ";
+#                    print values @{$oa1[$x]};
+                    print @{oarray2};
 
                     foreach (@oload)
                     {
                         print "\n array diff - \n";
-                        print $_[0];
+                        print @_;
                     }
 
 
@@ -189,14 +191,17 @@ sub trackOrderStatus
     #############################################################################################################
     sub compare{
 
-	my (@array1, @array2) = @_;
+	my (@oarray1, @oarray2) = @_;
         my @intersection = ();
         my @difference = ();
         my %count = ();
         
-        foreach my $element (@array1, @array2) { $count{$element}++ }
+        foreach my $element (@oarray1, @oarray2) { $count{$element}++ }
         foreach my $element (keys %count) {
             push @{ $count{$element} > 1 ? \@intersection : \@difference }, $element;
+#            print "XXX -> ";
+#            print values @{$difference[0]};
+#            print "<- XXX";
         };
 
         return @difference;

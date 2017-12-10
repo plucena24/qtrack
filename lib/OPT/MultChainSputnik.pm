@@ -193,6 +193,8 @@ sub launchChainSputnik
                 return 1;
         }
 
+	    print Dumper($ref);
+
         #check if anyhing came back else exist and re-request
         #unless (@{ $val // [] }) {
         #... # stuff to do if the array is empty

@@ -99,7 +99,7 @@ while ( my $row =
 
     my $symbol = join('', @{$row});
     my $table = lc(substr($symbol, 0, 1)) . "_optsputnik";
-    my $simulation = 0;
+    my $simulation = 1;
 
     @running = threads->list(threads::running);
     print "LOOP $i\n";
