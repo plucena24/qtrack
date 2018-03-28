@@ -4,11 +4,11 @@
 Code needs to be ported over from Perl to Python. The redevelopment process will be done in batches and each batch should be done in a cadence right after another and NOT simultaneously.
 
 ##### Batch I:
-1. Setup Postgres Database (latest stable version) instance and create database called QTRACK - this is where all the information will be loaded from the host server
-2. Go to 'slq' folder in this repository and use schema in 'schema_optsputnik.sql' to create 26 tables in the data base where each table store information for stocks starting with that first leter, so one table per letter of the alphabet (a,b,c,d,e...x,y,z)
-3. The naming of the table will be the first letter of the stock then '_optsputnik' as the remaining name (a_optsputnik, b_optsputnik... z_optsputnik); this is why '&symbol' in '&symbols_optsputnik' is a reference for each letter of the alphabet as the tables get created.
-4. The process for steps 2 and 3 should not be done manually and there should be a class written in Python to execute the 'schema_optsputnik.sql' for all letters in the alphabet
-5. 
+###### 1. Setup Postgres Database (latest stable version) instance and create database called QTRACK - this is where all the information will be loaded from the host server
+###### 2. Go to 'slq' folder in this repository and use schema in 'schema_optsputnik.sql' to create 26 tables in the data base where each table store information for stocks starting with that first leter, so one table per letter of the alphabet (a,b,c,d,e...x,y,z)
+###### 3. The naming of the table will be the first letter of the stock then '_optsputnik' as the remaining name (a_optsputnik, b_optsputnik... z_optsputnik); this is why '&symbol' in '&symbols_optsputnik' is a reference for each letter of the alphabet as the tables get created.
+###### 4. The process for steps 2 and 3 should not be done manually and there should be a class written in Python to execute the 'schema_optsputnik.sql' for all letters in the alphabet
+###### 5. 
 
 
 #### OptionChain Request:
