@@ -1,0 +1,56 @@
+$VAR1 = bless( {
+                 '_request' => bless( {
+                                        '_uri_canonical' => bless( do{\(my $o = 'https://apis.tdameritrade.com/apps/100/SymbolLookup?source=ROFE&matchstring=LMFA%20.;')}, 'URI::https' ),
+                                        '_method' => 'GET',
+                                        '_headers' => bless( {
+                                                               'user-agent' => 'libwww-perl/6.15',
+                                                               'cookie2' => '$Version="1"',
+                                                               'cookie' => 'JSESSIONID=CA2266EFBA845B0C808B2C4440D5567E.BaqKc2zxYfPJxdjBPcqWPg',
+                                                               '::std_case' => {
+                                                                                 'cookie2' => 'Cookie2',
+                                                                                 'cookie' => 'Cookie',
+                                                                                 'if-ssl-cert-subject' => 'If-SSL-Cert-Subject'
+                                                                               }
+                                                             }, 'HTTP::Headers' ),
+                                        '_uri' => bless( do{\(my $o = 'https://apis.tdameritrade.com/apps/100/SymbolLookup?source=ROFE&matchstring=LMFA%20.;')}, 'URI::https' ),
+                                        '_content' => ''
+                                      }, 'HTTP::Request' ),
+                 '_headers' => bless( {
+                                        'content-length' => '87',
+                                        'keep-alive' => 'timeout=15',
+                                        'expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
+                                        'server' => 'Apache',
+                                        '::std_case' => {
+                                                          'client-peer' => 'Client-Peer',
+                                                          'set-cookie' => 'Set-Cookie',
+                                                          'client-response-num' => 'Client-Response-Num',
+                                                          'keep-alive' => 'Keep-Alive',
+                                                          'client-ssl-cert-subject' => 'Client-SSL-Cert-Subject',
+                                                          'client-ssl-cert-issuer' => 'Client-SSL-Cert-Issuer',
+                                                          'client-ssl-socket-class' => 'Client-SSL-Socket-Class',
+                                                          'client-date' => 'Client-Date',
+                                                          'client-ssl-cipher' => 'Client-SSL-Cipher',
+                                                          'strict-transport-security' => 'Strict-Transport-Security',
+                                                          'set-cookie2' => 'Set-Cookie2'
+                                                        },
+                                        'client-ssl-cert-subject' => '/C=US/ST=Nebraska/L=OMAHA/O=TD Ameritrade/OU=ATI EG/CN=tdameritrade.com',
+                                        'date' => 'Tue, 12 Dec 2017 20:09:53 GMT',
+                                        'client-ssl-socket-class' => 'IO::Socket::SSL',
+                                        'client-ssl-cipher' => 'AES256-SHA256',
+                                        'cache-control' => 'no-store',
+                                        'client-response-num' => 1,
+                                        'connection' => 'Keep-Alive',
+                                        'client-peer' => '216.105.251.201:443',
+                                        'pragma' => 'no-cache',
+                                        'client-ssl-cert-issuer' => '/C=US/O=Symantec Corporation/OU=Symantec Trust Network/CN=Symantec Class 3 Secure Server CA - G4',
+                                        'content-type' => 'text/xml;charset=UTF-8',
+                                        'client-date' => 'Tue, 12 Dec 2017 20:09:53 GMT',
+                                        'strict-transport-security' => 'max-age=31536000'
+                                      }, 'HTTP::Headers' ),
+                 '_msg' => 'OK',
+                 '_content' => '<?xml version="1.0"?><amtd><result>FAIL</result><error>Symbol not found.</error></amtd>',
+                 '_protocol' => 'HTTP/1.1',
+                 '_rc' => '200'
+               }, 'HTTP::Response' );
+
+ ...symbol LMFA  updated...

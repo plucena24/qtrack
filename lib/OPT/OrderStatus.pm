@@ -4,8 +4,8 @@ use warnings;
 use XML::Simple;
 use XML::Parser;
 use DBI;
-#use Data::Dumper;
-use Data::Dump 'dump';
+use Data::Dumper;
+#use Data::Dump 'dump';
 use LWP::UserAgent;
 use DateTime;
 use Benchmark qw( cmpthese );
@@ -218,7 +218,16 @@ sub trackOrderStatus
 
         $ua->cookie_jar({});
 
-        my ($source, $userid, $pass) = split /~/, get_credentials("/home/zad0xlik/.qtrack.conf");
+        #my ($source, $userid, $pass) = split /~/, get_credentials("/home/zad0xlik/.qtrack.conf");
+
+	my $source = 'ROFE';
+        my $userid = '44004374';
+        ##my $pass = 'H1wystar';
+        my $pass = '1fizmat';
+
+	print '\n';
+	print $userid;
+	print '\n';
 
         #Make a https request
         my $url = 'https://apis.tdameritrade.com/apps/200/LogIn?source='.$source.'&version=1.0';
@@ -234,10 +243,8 @@ sub trackOrderStatus
 
         $url = 'https://apis.tdameritrade.com/apps/100/BalancesAndPositions?source='.$source;
 
-
         $response = $ua->get($url); die "can't get $url --", $response->status_line
             unless $response->is_success;
-
 
         my $xs = XML::Simple->new();
         my $ref; # = $xs->XMLin($response->content, ForceArray => ['optionchain'], KeyAttr => {});
@@ -253,6 +260,8 @@ sub trackOrderStatus
                 print "\n ...server not reached...\n";
                 return 1;
         }
+
+	print Dumper($ref);
 
         #check if anyhing came back else exist and re-request
         if (not defined $ref->{'balance'}) {
