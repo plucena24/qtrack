@@ -1,14 +1,14 @@
 ## Qtrack - Options Tick Tracking
 
 #### Re-Development Instructions from Perl to Python:
-Code needs to be ported over from Perl to Python. The redevelopment process will be done in batches and each batch should be done in a cadence right after another and NOT simultaneously.
+The goal of the project is to implement current Perl script functionality using Python instead. The new implementation shall be done in batches, with each batch occuring immediately following the previous batch, but NOT simultaneously.
 
 ##### Batch I:
 ###### 1. Setup Postgres Database (latest stable version) instance and create database called 'QTRACK' - this is where all the information will be loaded from received from the TD API server
 ###### 2. Go to 'slq' folder in this repository and use schema in 'schema_optsputnik.sql' to create 26 tables in the database where each table would store information for stocks starting with its first leter, so one table per letter of the alphabet (a,b,c,d,e...x,y,z)
 ###### 3. The naming of the table will be the first letter of the stock then '_optsputnik' as the remaining name (a_optsputnik, b_optsputnik... z_optsputnik); this is why '&symbol' in '&symbols_optsputnik' is a reference for each letter of the alphabet as the tables get created.
 ###### 4. The process for steps 2 and 3 should not be done manually and there should be a class written in Python to execute the 'schema_optsputnik.sql' for all letters in the alphabet
-###### 5. After all the tables are created, you will need to recode a Perl Module called 'MultChainSputnik.pm' (you can split this class into smaller sub-classes in Python); This code will retrieve information from TD API server, transform it into the format that has been declared in the database and load it into correspoding table of the first letter the stock into the table that start with the same letter.
+###### 5. After all the tables are created, you will need to recode a Perl Module called 'MultChainSputnik.pm' located in 'qtrack/lib/OPT/' (you can split this class into smaller sub-classes in Python); This code will retrieve information from TD API server, transform it into the format that has been declared in the database and load it into correspoding table of the first letter the stock into the table that start with the same letter
 
 
 
