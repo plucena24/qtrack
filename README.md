@@ -1,11 +1,20 @@
 ## Qtrack - Options Tick Tracking
 
+#### Development Instructions:
+Code needs to be ported over from Perl to Python. The redevelopment process will be done in batches and each batch should be done right after another and not simultaneously.
+
+##### Part I:
+1. Setup Postgres instances and create database called QTRACK - this is where all the information will be loaded from the host server
+2. Go to slq folder in the repository and use schema in 'schema_optsputnik.sql' to create 26 tables in the data base where each tables will be for all stocks starting with the letter (a,b,c,d,e...x,y,z).
+3. The layout of the table will be the first letter of the stock then '_optsputnik' as the remaining name (a_optsputnik, b_optsputnik... z_optsputnik)
+
+
 #### OptionChain Request:
 
 ##### Request URL:
 ```https://apis.tdameritrade.com/apps/200/OptionChain?source=<#sourceID#>&symbol=<#symbol#>```
 
-##### Parameters: 
+##### Parameters:
 The symbol parameter contains the underlying symbol for the option chain being requested.
 
 |PARAMETER|DESCRIPTION|REQUIRED|POSSIBLE VALUES|
